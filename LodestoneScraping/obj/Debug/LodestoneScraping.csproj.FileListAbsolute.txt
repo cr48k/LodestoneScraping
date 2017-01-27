@@ -9,3 +9,4 @@ D:\Users\croagunk\Documents\Git\LodestoneScraping\LodestoneScraping\obj\Debug\Lo
 D:\Users\croagunk\Documents\Git\LodestoneScraping\LodestoneScraping\obj\Debug\LodestoneScraping.csproj.GenerateResource.Cache
 D:\Users\croagunk\Documents\Git\LodestoneScraping\LodestoneScraping\obj\Debug\LodestoneScraping.exe
 D:\Users\croagunk\Documents\Git\LodestoneScraping\LodestoneScraping\obj\Debug\LodestoneScraping.pdb
+D:\Users\croagunk\Documents\Git\LodestoneScraping\LodestoneScraping\obj\Debug\LodestoneScraping.mainForm.resources

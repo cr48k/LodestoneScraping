@@ -35,6 +35,7 @@
             this.mainWebBrowser = new System.Windows.Forms.WebBrowser();
             this.browserStatusStrip = new System.Windows.Forms.StatusStrip();
             this.urlTextBox = new System.Windows.Forms.TextBox();
+            this.subWebBrowser = new System.Windows.Forms.WebBrowser();
             this.selectAllCheckBox = new System.Windows.Forms.CheckBox();
             this.exportMessageLabel = new System.Windows.Forms.Label();
             this.exportButton = new System.Windows.Forms.Button();
@@ -45,7 +46,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.characterNameLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.subWebBrowser = new System.Windows.Forms.WebBrowser();
             ((System.ComponentModel.ISupportInitialize)(this.mainSplitContainer)).BeginInit();
             this.mainSplitContainer.Panel1.SuspendLayout();
             this.mainSplitContainer.Panel2.SuspendLayout();
@@ -140,21 +140,32 @@
             this.urlTextBox.TabIndex = 0;
             this.urlTextBox.TabStop = false;
             // 
+            // subWebBrowser
+            // 
+            this.subWebBrowser.AllowWebBrowserDrop = false;
+            this.subWebBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.subWebBrowser.Location = new System.Drawing.Point(0, 0);
+            this.subWebBrowser.MinimumSize = new System.Drawing.Size(20, 20);
+            this.subWebBrowser.Name = "subWebBrowser";
+            this.subWebBrowser.Size = new System.Drawing.Size(1024, 813);
+            this.subWebBrowser.TabIndex = 3;
+            this.subWebBrowser.Url = new System.Uri("", System.UriKind.Relative);
+            this.subWebBrowser.Visible = false;
+            // 
             // selectAllCheckBox
             // 
             this.selectAllCheckBox.AutoSize = true;
-            this.selectAllCheckBox.Enabled = false;
             this.selectAllCheckBox.Location = new System.Drawing.Point(151, 98);
             this.selectAllCheckBox.Name = "selectAllCheckBox";
             this.selectAllCheckBox.Size = new System.Drawing.Size(79, 19);
             this.selectAllCheckBox.TabIndex = 5;
             this.selectAllCheckBox.Text = "すべて選択";
             this.selectAllCheckBox.UseVisualStyleBackColor = true;
+            this.selectAllCheckBox.CheckedChanged += new System.EventHandler(this.selectAllCheckBox_CheckedChanged);
             // 
             // exportMessageLabel
             // 
             this.exportMessageLabel.BackColor = System.Drawing.Color.White;
-            this.exportMessageLabel.Enabled = false;
             this.exportMessageLabel.Location = new System.Drawing.Point(6, 236);
             this.exportMessageLabel.Name = "exportMessageLabel";
             this.exportMessageLabel.Size = new System.Drawing.Size(153, 15);
@@ -164,17 +175,18 @@
             // 
             // exportButton
             // 
-            this.exportButton.Enabled = false;
             this.exportButton.Location = new System.Drawing.Point(160, 232);
             this.exportButton.Name = "exportButton";
             this.exportButton.Size = new System.Drawing.Size(70, 23);
             this.exportButton.TabIndex = 3;
             this.exportButton.Text = "エクスポート";
             this.exportButton.UseVisualStyleBackColor = true;
+            this.exportButton.Click += new System.EventHandler(this.exportButton_Click);
             // 
             // retainerListBox
             // 
             this.retainerListBox.FormattingEnabled = true;
+            this.retainerListBox.HorizontalScrollbar = true;
             this.retainerListBox.ItemHeight = 15;
             this.retainerListBox.Location = new System.Drawing.Point(3, 117);
             this.retainerListBox.Name = "retainerListBox";
@@ -182,6 +194,7 @@
             this.retainerListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.retainerListBox.Size = new System.Drawing.Size(227, 109);
             this.retainerListBox.TabIndex = 2;
+            this.retainerListBox.SelectedIndexChanged += new System.EventHandler(this.retainerListBox_SelectedIndexChanged);
             // 
             // label3
             // 
@@ -241,18 +254,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "キャラクター名:";
             // 
-            // subWebBrowser
-            // 
-            this.subWebBrowser.AllowWebBrowserDrop = false;
-            this.subWebBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.subWebBrowser.Location = new System.Drawing.Point(0, 0);
-            this.subWebBrowser.MinimumSize = new System.Drawing.Size(20, 20);
-            this.subWebBrowser.Name = "subWebBrowser";
-            this.subWebBrowser.Size = new System.Drawing.Size(1024, 813);
-            this.subWebBrowser.TabIndex = 3;
-            this.subWebBrowser.Url = new System.Uri("", System.UriKind.Relative);
-            this.subWebBrowser.Visible = false;
-            // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -267,6 +268,7 @@
             this.Name = "mainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Lodestone Scraping";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.mainForm_FormClosing);
             this.mainSplitContainer.Panel1.ResumeLayout(false);
             this.mainSplitContainer.Panel1.PerformLayout();
             this.mainSplitContainer.Panel2.ResumeLayout(false);

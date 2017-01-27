@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.Text.RegularExpressions;
+
 namespace LodestoneScraping
 {
     public class Retainer
@@ -42,7 +44,14 @@ namespace LodestoneScraping
         public string Url
         {
             get { return url; }
-            set { url = value; }
+            set
+            {
+                url = value;
+
+                var regex = new Regex(@"http://jp.finalfantasyxiv.com/lodestone/character/\d+/retainer/(\w+)/", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+                var match = regex.Match(url).Groups[1].Value;
+                id = match;
+            }
         }
         /// <summary>
         /// リテイナーデータ最終更新日時
@@ -67,6 +76,13 @@ namespace LodestoneScraping
         {
             get { return gil; }
             set { gil = value; }
+        }
+        /// <summary>
+        /// リテイナーID
+        /// </summary>
+        public string Id
+        {
+            get { return id; }
         }
 
         /// <summary>
