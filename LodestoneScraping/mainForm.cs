@@ -15,6 +15,8 @@ using System.Data.SQLite;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 
+using LodestoneScraping.Properties;
+
 namespace LodestoneScraping
 {
     public partial class mainForm : Form
@@ -80,6 +82,8 @@ namespace LodestoneScraping
 
             isParsing = false;
             SwitchControleEnabled(isParsing);
+
+            selectAllCheckBox.Checked = true;
         }
 
         private async void mainWebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
@@ -89,7 +93,6 @@ namespace LodestoneScraping
 
             // キャラクター情報更新
             var ldst_id = await UpdateCharacterInfo();
-            //Debug.WriteLine(ldst_id);
             if (ldst_id != _ldst_id)
             {
                 _ldst_id = ldst_id;
@@ -247,7 +250,7 @@ namespace LodestoneScraping
             // リテイナー一覧を取得
             ReportProgress(20, "リテイナー一覧を取得しています");
             var retainer_list_nodes = doc.DocumentNode.SelectNodes(@"//div[contains(@class,'retainer--select')]/select/option");
-            if (retainer_list_nodes == null) { Debug.WriteLine("retainer list node is  null"); return Task.Run(() => { return retainers; }); }
+            if (retainer_list_nodes == null) { return Task.Run(() => { return retainers; }); }
             foreach (var node in retainer_list_nodes)
             {
                 if (node.Attributes["value"].Value == "") continue;
@@ -277,7 +280,6 @@ namespace LodestoneScraping
                 retainers[i].LastUpdate = last_update;
                 var index = retainer_list.FindIndex(item => (item.Id == retainers[i].Id && item.Owner == retainers[i].Owner));
                 if (index >= 0 && retainers[i].LastUpdate <= retainer_list[index].LastUpdate) {
-                    Debug.WriteLine("Skip: " + retainers[i].Id);
                     retainers.RemoveAt(i--);
                     continue;
                 }
@@ -298,7 +300,7 @@ namespace LodestoneScraping
                     }
                     retainers[i].Items = items;
                 }
-                catch (Exception e) { Debug.WriteLine(e.Message); }
+                catch (Exception e) { }
             }
 
             ReportProgress(100);
@@ -392,7 +394,6 @@ namespace LodestoneScraping
                             // アイテムデータ追加
                             if (ar == 0)
                             {
-                                Debug.WriteLine("ItemDataID: No rows affected.");
                                 continue;
                             }
                             var cmdtxt = "INSERT INTO ItemData (itemdata_id, item_name, item_hq, item_qty) VALUES ";
@@ -477,7 +478,52 @@ namespace LodestoneScraping
 
         private void exportButton_Click(object sender, EventArgs e)
         {
-            //TODO:データ出力処理
+            if (retainerListBox.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("項目が選択されていません。", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            //データ出力処理 (CSV)
+            string path = "";
+            
+            var sfd = new SaveFileDialog();
+            var dir = Settings.Default.DirectoryPath;
+            sfd.FileName = "lds_export_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".csv";
+            sfd.InitialDirectory = (dir == "" ? Application.StartupPath : dir);
+            sfd.Filter = "CSVファイル(*.csv)|*.csv|すべてのファイル(*.*)|*.*";
+            sfd.RestoreDirectory = true;
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                path = sfd.FileName;
+                Settings.Default.DirectoryPath = Path.GetDirectoryName(path);
+                Settings.Default.Save();
+            }
+            else
+            {
+                return;
+            }
+
+            string data = "アイテム名,所持数,リテイナー名,キャラクター名\r\n";
+            for (int i = 0; i < retainerListBox.SelectedItems.Count; i++)
+            {
+                var regex = new Regex(@"/ (\w+)", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+                var match = regex.Match(retainerListBox.SelectedItems[i].ToString());
+                var id = match.Groups[1].Value;
+
+                var li = retainer_list.FindIndex(item => (item.Id == id));
+                foreach (var itm in retainer_list[li].Items)
+                {
+                    data += itm.Name + (itm.Hq ? "HQ" : "") + "," + itm.Quantity + "," + retainer_list[li].Name + "," + retainer_list[li].Owner + "\r\n";
+                }
+            }
+
+            using (var sw = new StreamWriter(path, false, Encoding.GetEncoding("shift_jis")))
+            {
+                sw.Write(data);
+            }
+
+            MessageBox.Show(path + " にエクスポートしました。", "エクスポート完了", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void updateToolStripMenuItem_Click(object sender, EventArgs e)
