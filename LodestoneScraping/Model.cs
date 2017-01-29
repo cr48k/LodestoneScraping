@@ -47,7 +47,6 @@ namespace LodestoneScraping
             set
             {
                 url = value;
-
                 var regex = new Regex(@"http://jp.finalfantasyxiv.com/lodestone/character/\d+/retainer/(\w+)/", RegexOptions.IgnoreCase | RegexOptions.Singleline);
                 var match = regex.Match(url).Groups[1].Value;
                 id = match;

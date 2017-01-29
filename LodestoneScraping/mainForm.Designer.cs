@@ -28,18 +28,27 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.mainSplitContainer = new System.Windows.Forms.SplitContainer();
             this.parsingPanel = new System.Windows.Forms.Panel();
             this.parsingProgressLabel = new System.Windows.Forms.Label();
             this.parsingProgressBar = new System.Windows.Forms.ProgressBar();
             this.mainWebBrowser = new System.Windows.Forms.WebBrowser();
             this.browserStatusStrip = new System.Windows.Forms.StatusStrip();
+            this.testToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.urlTextBox = new System.Windows.Forms.TextBox();
             this.subWebBrowser = new System.Windows.Forms.WebBrowser();
             this.selectAllCheckBox = new System.Windows.Forms.CheckBox();
             this.exportMessageLabel = new System.Windows.Forms.Label();
             this.exportButton = new System.Windows.Forms.Button();
             this.retainerListBox = new System.Windows.Forms.ListBox();
+            this.selectedRetainerContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.updateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.setectedItemOptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label3 = new System.Windows.Forms.Label();
             this.characterInfoGroupBox = new System.Windows.Forms.GroupBox();
             this.serverNameLabel = new System.Windows.Forms.Label();
@@ -51,6 +60,8 @@
             this.mainSplitContainer.Panel2.SuspendLayout();
             this.mainSplitContainer.SuspendLayout();
             this.parsingPanel.SuspendLayout();
+            this.browserStatusStrip.SuspendLayout();
+            this.selectedRetainerContextMenuStrip.SuspendLayout();
             this.characterInfoGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -97,9 +108,9 @@
             this.parsingProgressLabel.AutoSize = true;
             this.parsingProgressLabel.Location = new System.Drawing.Point(74, 93);
             this.parsingProgressLabel.Name = "parsingProgressLabel";
-            this.parsingProgressLabel.Size = new System.Drawing.Size(41, 15);
+            this.parsingProgressLabel.Size = new System.Drawing.Size(12, 15);
             this.parsingProgressLabel.TabIndex = 1;
-            this.parsingProgressLabel.Text = "label4";
+            this.parsingProgressLabel.Text = "-";
             // 
             // parsingProgressBar
             // 
@@ -123,11 +134,18 @@
             // 
             // browserStatusStrip
             // 
+            this.browserStatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.testToolStripStatusLabel});
             this.browserStatusStrip.Location = new System.Drawing.Point(0, 791);
             this.browserStatusStrip.Name = "browserStatusStrip";
             this.browserStatusStrip.Size = new System.Drawing.Size(1024, 22);
             this.browserStatusStrip.TabIndex = 1;
             this.browserStatusStrip.Text = "statusStrip1";
+            // 
+            // testToolStripStatusLabel
+            // 
+            this.testToolStripStatusLabel.Name = "testToolStripStatusLabel";
+            this.testToolStripStatusLabel.Size = new System.Drawing.Size(0, 17);
             // 
             // urlTextBox
             // 
@@ -185,16 +203,70 @@
             // 
             // retainerListBox
             // 
+            this.retainerListBox.ContextMenuStrip = this.selectedRetainerContextMenuStrip;
             this.retainerListBox.FormattingEnabled = true;
             this.retainerListBox.HorizontalScrollbar = true;
             this.retainerListBox.ItemHeight = 15;
             this.retainerListBox.Location = new System.Drawing.Point(3, 117);
             this.retainerListBox.Name = "retainerListBox";
             this.retainerListBox.ScrollAlwaysVisible = true;
-            this.retainerListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.retainerListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
             this.retainerListBox.Size = new System.Drawing.Size(227, 109);
             this.retainerListBox.TabIndex = 2;
             this.retainerListBox.SelectedIndexChanged += new System.EventHandler(this.retainerListBox_SelectedIndexChanged);
+            // 
+            // selectedRetainerContextMenuStrip
+            // 
+            this.selectedRetainerContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.updateToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.setectedItemOptionToolStripMenuItem,
+            this.clearToolStripMenuItem});
+            this.selectedRetainerContextMenuStrip.Name = "selectedRetainerContextMenuStrip";
+            this.selectedRetainerContextMenuStrip.Size = new System.Drawing.Size(161, 76);
+            // 
+            // updateToolStripMenuItem
+            // 
+            this.updateToolStripMenuItem.Name = "updateToolStripMenuItem";
+            this.updateToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.updateToolStripMenuItem.Text = "データ更新";
+            this.updateToolStripMenuItem.Click += new System.EventHandler(this.updateToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(157, 6);
+            // 
+            // setectedItemOptionToolStripMenuItem
+            // 
+            this.setectedItemOptionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.viewToolStripMenuItem,
+            this.deleteToolStripMenuItem});
+            this.setectedItemOptionToolStripMenuItem.Name = "setectedItemOptionToolStripMenuItem";
+            this.setectedItemOptionToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.setectedItemOptionToolStripMenuItem.Text = "選択中のデータ";
+            // 
+            // viewToolStripMenuItem
+            // 
+            this.viewToolStripMenuItem.Enabled = false;
+            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.viewToolStripMenuItem.Text = "表示";
+            this.viewToolStripMenuItem.Click += new System.EventHandler(this.viewToolStripMenuItem_Click);
+            // 
+            // deleteToolStripMenuItem
+            // 
+            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.deleteToolStripMenuItem.Text = "削除";
+            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
+            // 
+            // clearToolStripMenuItem
+            // 
+            this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.clearToolStripMenuItem.Text = "クリア";
+            this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
             // 
             // label3
             // 
@@ -277,6 +349,9 @@
             this.mainSplitContainer.ResumeLayout(false);
             this.parsingPanel.ResumeLayout(false);
             this.parsingPanel.PerformLayout();
+            this.browserStatusStrip.ResumeLayout(false);
+            this.browserStatusStrip.PerformLayout();
+            this.selectedRetainerContextMenuStrip.ResumeLayout(false);
             this.characterInfoGroupBox.ResumeLayout(false);
             this.characterInfoGroupBox.PerformLayout();
             this.ResumeLayout(false);
@@ -303,6 +378,14 @@
         private System.Windows.Forms.Label parsingProgressLabel;
         private System.Windows.Forms.ProgressBar parsingProgressBar;
         private System.Windows.Forms.WebBrowser subWebBrowser;
+        private System.Windows.Forms.ToolStripStatusLabel testToolStripStatusLabel;
+        private System.Windows.Forms.ContextMenuStrip selectedRetainerContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem updateToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem setectedItemOptionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
     }
 }
 

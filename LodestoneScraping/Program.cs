@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using System.Data.SQLite;
 using System.Diagnostics;
 using Microsoft.Win32;
 
@@ -52,6 +53,54 @@ namespace LodestoneScraping
             regkey.SetValue(proc_name, version, RegistryValueKind.DWord);
             regkey.SetValue(proc_dbg_name, version, RegistryValueKind.DWord);
 
+            // データベースチェック
+            try
+            {
+                using (SQLiteConnection cn = new SQLiteConnection("Data Source=lds.db"))
+                {
+                    cn.Open();
+                    using (SQLiteCommand cmd = cn.CreateCommand())
+                    {
+                        // リテイナーテーブル作成
+                        cmd.CommandText = "CREATE TABLE IF NOT EXISTS Retainer ("
+                                          + "retainer_id TEXT PRIMARY KEY, "
+                                          + "retainer_name TEXT NOT NULL, "
+                                          + "owner_name TEXT NOT NULL, "
+                                          + "owner_server TEXT NOT NULL, "
+                                          + "retainer_url TEXT NOT NULL, "
+                                          + "itemdata_id TEXT"
+                                          + ", FOREIGN KEY (itemdata_id) REFERENCES Retainer(itemdata_id)"
+                                          + ");";
+                        cmd.ExecuteNonQuery();
+                        // アイテムデータリストテーブル作成
+                        cmd.CommandText = "CREATE TABLE IF NOT EXISTS ItemDataList ("
+                                          + "itemdata_id TEXT PRIMARY KEY, "
+                                          + "retainer_id TEXT NOT NULL, "
+                                          + "last_update INTEGER NOT NULL, "
+                                          + "timestamp INTEGER NOT NULL, "
+                                          + "gil INTEGER NOT NULL"
+                                          + ", FOREIGN KEY (retainer_id) REFERENCES Retainer(retainer_id)"
+                                          + ");";
+                        cmd.ExecuteNonQuery();
+                        // アイテムデータテーブル作成
+                        cmd.CommandText = "CREATE TABLE IF NOT EXISTS ItemData ("
+                                          + "itemdata_id TEXT NOT NULL, "
+                                          + "item_name TEXT NOT NULL, "
+                                          + "item_hq INTEGER NOT NULL, "
+                                          + "item_qty INTEGER NOT NULL"
+                                          + ", FOREIGN KEY (itemdata_id) REFERENCES ItemDataList(itemdata_id)"
+                                          + ");";
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                Debug.WriteLine(e.StackTrace);
+            }
+
+            // mainForm表示
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new mainForm());
