@@ -223,7 +223,7 @@
             this.setectedItemOptionToolStripMenuItem,
             this.clearToolStripMenuItem});
             this.selectedRetainerContextMenuStrip.Name = "selectedRetainerContextMenuStrip";
-            this.selectedRetainerContextMenuStrip.Size = new System.Drawing.Size(161, 76);
+            this.selectedRetainerContextMenuStrip.Size = new System.Drawing.Size(161, 98);
             // 
             // updateToolStripMenuItem
             // 
@@ -248,7 +248,6 @@
             // 
             // viewToolStripMenuItem
             // 
-            this.viewToolStripMenuItem.Enabled = false;
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.viewToolStripMenuItem.Text = "表示";

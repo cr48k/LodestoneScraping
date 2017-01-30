@@ -300,7 +300,7 @@ namespace LodestoneScraping
                     }
                     retainers[i].Items = items;
                 }
-                catch (Exception e) { }
+                catch (Exception) { }
             }
 
             ReportProgress(100);
@@ -415,6 +415,7 @@ namespace LodestoneScraping
                                               + " WHERE retainer_id = '" + r.Id + "'";
                             cmd.ExecuteNonQuery();
                         }
+                        cn.Close();
                     }
                 }
                 catch (Exception) { }
@@ -534,9 +535,27 @@ namespace LodestoneScraping
 
         private void viewToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // データ表示 TODO
-            //var vf = new viewForm();
-            //vf.ShowDialog();
+            // データ表示
+            if (retainerListBox.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("項目が選択されていません。", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            var rl = new List<Retainer>();
+            for (int i = 0; i < retainerListBox.SelectedItems.Count; i++)
+            {
+                var regex = new Regex(@"/ (\w+)", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+                var match = regex.Match(retainerListBox.SelectedItems[i].ToString());
+                var id = match.Groups[1].Value;
+
+                var li = retainer_list.FindIndex(item => (item.Id == id));
+                rl.Add(retainer_list[li]);
+            }
+
+            var vf = new viewForm();
+            vf.RetainerList = rl;
+            vf.ShowDialog();
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -545,22 +564,20 @@ namespace LodestoneScraping
             if (retainerListBox.SelectedItems.Count == 0)
             {
                 MessageBox.Show("項目が選択されていません。", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
             }
-            else
+            for (int i = 0; i < retainerListBox.SelectedItems.Count; i++)
             {
-                for (int i = 0; i < retainerListBox.SelectedItems.Count; i++)
-                {
-                    var regex = new Regex(@"/ (\w+)", RegexOptions.IgnoreCase | RegexOptions.Singleline);
-                    var match = regex.Match(retainerListBox.SelectedItems[i].ToString());
-                    var id = match.Groups[1].Value;
+                var regex = new Regex(@"/ (\w+)", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+                var match = regex.Match(retainerListBox.SelectedItems[i].ToString());
+                var id = match.Groups[1].Value;
 
-                    var li = retainer_list.FindIndex(item => (item.Id == id));
-                    retainer_list.RemoveAt(li);
-                }
-                retainerListBox.BeginUpdate();
-                while (retainerListBox.SelectedItems.Count > 0) { retainerListBox.Items.RemoveAt(retainerListBox.SelectedIndices[0]); }
-                retainerListBox.EndUpdate();
+                var li = retainer_list.FindIndex(item => (item.Id == id));
+                retainer_list.RemoveAt(li);
             }
+            retainerListBox.BeginUpdate();
+            while (retainerListBox.SelectedItems.Count > 0) { retainerListBox.Items.RemoveAt(retainerListBox.SelectedIndices[0]); }
+            retainerListBox.EndUpdate();
         }
 
         private void clearToolStripMenuItem_Click(object sender, EventArgs e)

@@ -42,12 +42,14 @@
             this.retainerLastUpdateLabel = new System.Windows.Forms.Label();
             this.borderLineLabel = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.itemDataGridView = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.itemDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 521);
+            this.label1.Location = new System.Drawing.Point(3, 476);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(26, 15);
             this.label1.TabIndex = 0;
@@ -56,7 +58,7 @@
             // retainerIdLabel
             // 
             this.retainerIdLabel.AutoSize = true;
-            this.retainerIdLabel.Location = new System.Drawing.Point(35, 521);
+            this.retainerIdLabel.Location = new System.Drawing.Point(35, 476);
             this.retainerIdLabel.Name = "retainerIdLabel";
             this.retainerIdLabel.Size = new System.Drawing.Size(12, 15);
             this.retainerIdLabel.TabIndex = 1;
@@ -91,10 +93,9 @@
             // 
             // retainerOwnerLabel
             // 
-            this.retainerOwnerLabel.AutoSize = true;
             this.retainerOwnerLabel.Location = new System.Drawing.Point(221, 33);
             this.retainerOwnerLabel.Name = "retainerOwnerLabel";
-            this.retainerOwnerLabel.Size = new System.Drawing.Size(12, 15);
+            this.retainerOwnerLabel.Size = new System.Drawing.Size(255, 15);
             this.retainerOwnerLabel.TabIndex = 5;
             this.retainerOwnerLabel.Text = "-";
             // 
@@ -109,17 +110,16 @@
             // 
             // retainerServerLabel
             // 
-            this.retainerServerLabel.AutoSize = true;
             this.retainerServerLabel.Location = new System.Drawing.Point(61, 33);
             this.retainerServerLabel.Name = "retainerServerLabel";
-            this.retainerServerLabel.Size = new System.Drawing.Size(12, 15);
+            this.retainerServerLabel.Size = new System.Drawing.Size(97, 15);
             this.retainerServerLabel.TabIndex = 7;
             this.retainerServerLabel.Text = "-";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(485, 9);
+            this.label5.Location = new System.Drawing.Point(482, 9);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(68, 15);
             this.label5.TabIndex = 8;
@@ -127,17 +127,16 @@
             // 
             // retainerGilLabel
             // 
-            this.retainerGilLabel.AutoSize = true;
-            this.retainerGilLabel.Location = new System.Drawing.Point(559, 9);
+            this.retainerGilLabel.Location = new System.Drawing.Point(556, 9);
             this.retainerGilLabel.Name = "retainerGilLabel";
-            this.retainerGilLabel.Size = new System.Drawing.Size(12, 15);
+            this.retainerGilLabel.Size = new System.Drawing.Size(141, 15);
             this.retainerGilLabel.TabIndex = 9;
             this.retainerGilLabel.Text = "-";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(485, 33);
+            this.label6.Location = new System.Drawing.Point(482, 33);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(60, 15);
             this.label6.TabIndex = 10;
@@ -145,10 +144,9 @@
             // 
             // retainerLastUpdateLabel
             // 
-            this.retainerLastUpdateLabel.AutoSize = true;
-            this.retainerLastUpdateLabel.Location = new System.Drawing.Point(551, 33);
+            this.retainerLastUpdateLabel.Location = new System.Drawing.Point(548, 33);
             this.retainerLastUpdateLabel.Name = "retainerLastUpdateLabel";
-            this.retainerLastUpdateLabel.Size = new System.Drawing.Size(12, 15);
+            this.retainerLastUpdateLabel.Size = new System.Drawing.Size(149, 15);
             this.retainerLastUpdateLabel.TabIndex = 11;
             this.retainerLastUpdateLabel.Text = "-";
             // 
@@ -157,7 +155,7 @@
             this.borderLineLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.borderLineLabel.Location = new System.Drawing.Point(0, 60);
             this.borderLineLabel.Name = "borderLineLabel";
-            this.borderLineLabel.Size = new System.Drawing.Size(738, 1);
+            this.borderLineLabel.Size = new System.Drawing.Size(700, 1);
             this.borderLineLabel.TabIndex = 13;
             // 
             // label7
@@ -169,11 +167,21 @@
             this.label7.TabIndex = 14;
             this.label7.Text = "アイテムリスト:";
             // 
+            // itemDataGridView
+            // 
+            this.itemDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.itemDataGridView.Location = new System.Drawing.Point(15, 102);
+            this.itemDataGridView.Name = "itemDataGridView";
+            this.itemDataGridView.RowTemplate.Height = 21;
+            this.itemDataGridView.Size = new System.Drawing.Size(673, 362);
+            this.itemDataGridView.TabIndex = 15;
+            // 
             // RetainerTabPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.itemDataGridView);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.borderLineLabel);
             this.Controls.Add(this.retainerLastUpdateLabel);
@@ -191,7 +199,9 @@
             this.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "RetainerTabPage";
-            this.Size = new System.Drawing.Size(738, 545);
+            this.Size = new System.Drawing.Size(700, 500);
+            this.Load += new System.EventHandler(this.RetainerTabPage_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.itemDataGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -213,5 +223,6 @@
         private System.Windows.Forms.Label retainerLastUpdateLabel;
         private System.Windows.Forms.Label borderLineLabel;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.DataGridView itemDataGridView;
     }
 }

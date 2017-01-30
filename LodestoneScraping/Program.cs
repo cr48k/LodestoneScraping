@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using System.Data;
 using System.Data.SQLite;
 using System.Diagnostics;
 using Microsoft.Win32;
@@ -61,6 +62,40 @@ namespace LodestoneScraping
                     cn.Open();
                     using (SQLiteCommand cmd = cn.CreateCommand())
                     {
+                        // 設定用テーブル作成
+                        cmd.CommandText = "CREATE TABLE IF NOT EXISTS Settings ("
+                                          + "item TEXT PRIMARY KEY, "
+                                          + "value TEXT NOT NULL"
+                                          + ");";
+                        cmd.ExecuteNonQuery();
+                        // バージョンチェック
+                        string dbv = null;
+                        var pv = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+                        cmd.CommandText = "SELECT value FROM Settings WHERE item = 'version';";
+                        using (var rdr = cmd.ExecuteReader())
+                        {
+                            while (rdr.Read())
+                            {
+                                dbv = (string)rdr[0];
+                            }
+                        }
+                        if (dbv == null)
+                        {
+                            cmd.CommandText = "INSERT INTO Settings VALUES ('version', '" + pv.ToString() + "');";
+                            cmd.Prepare();
+                            cmd.ExecuteNonQuery();
+                        }
+                        else
+                        {
+                            var dv = new Version(dbv);
+                            if (pv > dv)
+                            {
+                                cmd.CommandText = "UPDATE Settings SET value = '" + pv.ToString() + "' WHERE item = 'version';";
+                                cmd.Prepare();
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
+
                         // リテイナーテーブル作成
                         cmd.CommandText = "CREATE TABLE IF NOT EXISTS Retainer ("
                                           + "retainer_id TEXT PRIMARY KEY, "
@@ -90,6 +125,12 @@ namespace LodestoneScraping
                                           + "item_qty INTEGER NOT NULL"
                                           + ", FOREIGN KEY (itemdata_id) REFERENCES ItemDataList(itemdata_id)"
                                           + ");";
+                        cmd.ExecuteNonQuery();
+
+                        // ビュー作成
+                        cmd.CommandText = "CREATE VIEW IF NOT EXISTS RetainerItemView AS "
+                                          + "SELECT retainer_id, item_name, item_hq, item_qty FROM Retainer "
+                                          + "NATURAL INNER JOIN ItemData";
                         cmd.ExecuteNonQuery();
                     }
                 }
