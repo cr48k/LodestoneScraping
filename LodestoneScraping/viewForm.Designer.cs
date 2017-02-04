@@ -59,11 +59,11 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(80, 77);
+            this.label1.Location = new System.Drawing.Point(3, 3);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(106, 15);
+            this.label1.Size = new System.Drawing.Size(365, 15);
             this.label1.TabIndex = 0;
-            this.label1.Text = "No data to show.";
+            this.label1.Text = "表示するデータがありません。各リテイナーのタブからデータを表示してください。";
             // 
             // viewForm
             // 

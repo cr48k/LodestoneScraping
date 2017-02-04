@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using System.Data.SQLite;
+using System.IO;
+using LodestoneScraping.Properties;
+using System.Text.RegularExpressions;
 
 namespace LodestoneScraping
 {
@@ -63,6 +66,46 @@ namespace LodestoneScraping
             {
                 adp.Fill(table);
             }
+        }
+
+        private void exportButton_Click(object sender, EventArgs e)
+        {
+            //データ出力処理 (CSV)
+            string path = "";
+
+            var sfd = new SaveFileDialog();
+            var dir = Settings.Default.DirectoryPath;
+            sfd.FileName = "lds_export_" + RetainerName + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".csv";
+            sfd.InitialDirectory = (dir == "" ? Application.StartupPath : dir);
+            sfd.Filter = "CSVファイル(*.csv)|*.csv|すべてのファイル(*.*)|*.*";
+            sfd.RestoreDirectory = true;
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                path = sfd.FileName;
+                Settings.Default.DirectoryPath = Path.GetDirectoryName(path);
+                Settings.Default.Save();
+            }
+            else
+            {
+                return;
+            }
+
+            string data = "アイテム名,所持数,リテイナー名,キャラクター名\r\n";
+            for (int i = 0; i < itemDataGridView.Rows.Count; i++)
+            {
+                var c = itemDataGridView.Rows[i].Cells;
+                var item_name = c[0].Value.ToString();
+                var item_hq = (c[1].Value.ToString() == "1" ? "HQ" : "");
+                var item_qty = c[2].Value.ToString();
+                data += item_name + item_hq + "," + item_qty + "," + RetainerName + "," + OwnerName + "\r\n";
+            }
+
+            using (var sw = new StreamWriter(path, false, Encoding.GetEncoding("shift_jis")))
+            {
+                sw.Write(data);
+            }
+
+            MessageBox.Show(path + " にエクスポートしました。", "エクスポート完了", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

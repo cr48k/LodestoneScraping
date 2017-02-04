@@ -69,6 +69,8 @@ namespace LodestoneScraping
                 exportMessageLabel.Text = "選択中のデータを";
                 selectAllCheckBox.Checked = false;
                 selectAllCheckBox.Enabled = false;
+                exportMessageLabel.Enabled = false;
+                exportButton.Enabled = false;
             }
         }
 
@@ -93,11 +95,8 @@ namespace LodestoneScraping
 
             // キャラクター情報更新
             var ldst_id = await UpdateCharacterInfo();
-            if (ldst_id != _ldst_id)
-            {
-                _ldst_id = ldst_id;
-                StartParsing();
-            }
+            if (ldst_id != _ldst_id) { _ldst_id = ldst_id; }
+            if (_ldst_id > 0) { StartParsing(); }
         }
 
         private void mainWebBrowser_Navigated(object sender, WebBrowserNavigatedEventArgs e)
@@ -444,8 +443,11 @@ namespace LodestoneScraping
         {
             if (selectAllCheckBox.Checked)
             {
-                SendMessage(retainerListBox.Handle, LB_SETSEL, 1, -1);
-                retainerListBox.SetSelected(0, true);
+                if (retainerListBox.Items.Count > 0)
+                {
+                    SendMessage(retainerListBox.Handle, LB_SETSEL, 1, -1);
+                    retainerListBox.SetSelected(0, true);
+                }
             }
             else if (!modify_from_listbox_flag)
             {

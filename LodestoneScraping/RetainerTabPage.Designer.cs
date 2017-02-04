@@ -43,6 +43,7 @@
             this.borderLineLabel = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.itemDataGridView = new System.Windows.Forms.DataGridView();
+            this.exportButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.itemDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -169,18 +170,33 @@
             // 
             // itemDataGridView
             // 
+            this.itemDataGridView.AllowUserToAddRows = false;
+            this.itemDataGridView.AllowUserToDeleteRows = false;
+            this.itemDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.itemDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.itemDataGridView.Location = new System.Drawing.Point(15, 102);
             this.itemDataGridView.Name = "itemDataGridView";
+            this.itemDataGridView.ReadOnly = true;
             this.itemDataGridView.RowTemplate.Height = 21;
             this.itemDataGridView.Size = new System.Drawing.Size(673, 362);
             this.itemDataGridView.TabIndex = 15;
+            // 
+            // exportButton
+            // 
+            this.exportButton.Location = new System.Drawing.Point(613, 470);
+            this.exportButton.Name = "exportButton";
+            this.exportButton.Size = new System.Drawing.Size(75, 23);
+            this.exportButton.TabIndex = 16;
+            this.exportButton.Text = "エクスポート";
+            this.exportButton.UseVisualStyleBackColor = true;
+            this.exportButton.Click += new System.EventHandler(this.exportButton_Click);
             // 
             // RetainerTabPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.exportButton);
             this.Controls.Add(this.itemDataGridView);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.borderLineLabel);
@@ -224,5 +240,6 @@
         private System.Windows.Forms.Label borderLineLabel;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.DataGridView itemDataGridView;
+        private System.Windows.Forms.Button exportButton;
     }
 }
