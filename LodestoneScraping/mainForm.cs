@@ -590,5 +590,10 @@ namespace LodestoneScraping
 
             DisableRetainerListControls(true);
         }
+
+        private void mainForm_Load(object sender, EventArgs e)
+        {
+            Text += " " + Application.ProductVersion.ToString();
+        }
     }
 }

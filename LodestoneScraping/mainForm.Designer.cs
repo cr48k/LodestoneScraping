@@ -223,7 +223,7 @@
             this.setectedItemOptionToolStripMenuItem,
             this.clearToolStripMenuItem});
             this.selectedRetainerContextMenuStrip.Name = "selectedRetainerContextMenuStrip";
-            this.selectedRetainerContextMenuStrip.Size = new System.Drawing.Size(161, 98);
+            this.selectedRetainerContextMenuStrip.Size = new System.Drawing.Size(161, 76);
             // 
             // updateToolStripMenuItem
             // 
@@ -249,14 +249,14 @@
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.viewToolStripMenuItem.Text = "表示";
             this.viewToolStripMenuItem.Click += new System.EventHandler(this.viewToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.deleteToolStripMenuItem.Text = "削除";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
@@ -340,6 +340,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Lodestone Scraping";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.mainForm_FormClosing);
+            this.Load += new System.EventHandler(this.mainForm_Load);
             this.mainSplitContainer.Panel1.ResumeLayout(false);
             this.mainSplitContainer.Panel1.PerformLayout();
             this.mainSplitContainer.Panel2.ResumeLayout(false);

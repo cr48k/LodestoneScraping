@@ -8,6 +8,7 @@ using System.Data;
 using System.Data.SQLite;
 using System.Diagnostics;
 using Microsoft.Win32;
+using System.IO;
 
 namespace LodestoneScraping
 {
@@ -140,6 +141,9 @@ namespace LodestoneScraping
                 Debug.WriteLine(e.Message);
                 Debug.WriteLine(e.StackTrace);
             }
+
+            // Updater起動
+            if (File.Exists(@".\Updater.exe")) { Process.Start(@".\Updater.exe", Process.GetCurrentProcess().Id.ToString()); }
 
             // mainForm表示
             Application.EnableVisualStyles();
