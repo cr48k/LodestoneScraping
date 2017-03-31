@@ -22,7 +22,7 @@ namespace LodestoneScraping
     public partial class mainForm : Form
     {
         private static readonly string FFXIV_DOMAIN = "http://jp.finalfantasyxiv.com";
-        private static readonly DateTime UNIX_EPOCH = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        private static readonly DateTime UNIX_EPOCH = new DateTime(1970, 1, 1, 9, 0, 0, DateTimeKind.Utc);
 
         private Icon favicon = null;
         private long _ldst_id = -1;
@@ -248,14 +248,14 @@ namespace LodestoneScraping
 
             // リテイナー一覧を取得
             ReportProgress(20, "リテイナー一覧を取得しています");
-            var retainer_list_nodes = doc.DocumentNode.SelectNodes(@"//div[contains(@class,'retainer--select')]/select/option");
+            var retainer_list_nodes = doc.DocumentNode.SelectNodes(@"//ul[contains(@class,'parts__switch')]/li/a");
             if (retainer_list_nodes == null) { return Task.Run(() => { return retainers; }); }
             foreach (var node in retainer_list_nodes)
             {
-                if (node.Attributes["value"].Value == "") continue;
+                //if (node.Attributes["href"].Value == "") continue;
 
                 var name = node.InnerText.Trim();
-                var url = FFXIV_DOMAIN + node.Attributes["value"].Value;
+                var url = FFXIV_DOMAIN + node.Attributes["href"].Value;
                 var retainer = new Retainer(name, characterNameLabel.Text, serverNameLabel.Text, url, 0);
                 retainers.Add(retainer);
             }
@@ -274,7 +274,7 @@ namespace LodestoneScraping
 
                 // 既存のデータがあれば更新日時を比較
                 var regex = new Regex(@"ldst_strftime\(([0-9]+), 'YMDHM'\);", RegexOptions.IgnoreCase | RegexOptions.Singleline);
-                var last_update_node = doc.DocumentNode.SelectSingleNode(@"//div[contains(@class,'ymd')]/span/script");
+                var last_update_node = doc.DocumentNode.SelectSingleNode(@"//span[contains(@class,'heading__icon__update')]/script");
                 var last_update = long.Parse(regex.Match(last_update_node.InnerHtml).Groups[1].Value);
                 retainers[i].LastUpdate = last_update;
                 var index = retainer_list.FindIndex(item => (item.Id == retainers[i].Id && item.Owner == retainers[i].Owner));
@@ -283,17 +283,17 @@ namespace LodestoneScraping
                     continue;
                 }
                 
-                var gil = long.Parse(doc.DocumentNode.SelectSingleNode(@"//div[contains(@class,'fc_chest_subtit_gil')]").InnerText.Trim(), System.Globalization.NumberStyles.AllowThousands);
+                var gil = long.Parse(doc.DocumentNode.SelectSingleNode(@"//div[contains(@class,'item-block')]/p").InnerText.Trim(), System.Globalization.NumberStyles.AllowThousands);
                 retainers[i].Gil = gil;
 
                 try
                 {
-                    var item_nodes = doc.DocumentNode.SelectNodes(@"//tbody[contains(@id,'retainer_baggage_tbody')]/tr");
+                    var item_nodes = doc.DocumentNode.SelectNodes(@"//ul[contains(@class,'sys_item_list')]/li");
                     var items = new List<Item>();
                     foreach (var item_node in item_nodes)
                     {
-                        var item_name = item_node.SelectSingleNode(@".//div[contains(@class,'item_link')]//a").InnerText;
-                        var hq_flag = item_node.SelectSingleNode(@".//div[contains(@class,'item_link')]//img[contains(@class,'ic_item_quality')]") != null ? true : false;
+                        var item_name = item_node.SelectSingleNode(@".//div[contains(@class,'item-list__name')]//a").InnerText;
+                        var hq_flag = item_node.SelectSingleNode(@".//div[contains(@class,'item-list__name')]//img[contains(@class,'ic_item_quality')]") != null ? true : false;
                         var stack_count = int.Parse(item_node.Attributes["data-stack"].Value);
                         items.Add(new Item(item_name, hq_flag, stack_count));
                     }
